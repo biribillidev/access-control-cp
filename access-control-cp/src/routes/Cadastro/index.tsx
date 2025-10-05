@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import type { TipoUser } from "../../types/tipoUser";
 
 export default function Cadastro(){
-
+    const API_URL = "http://localhost:3001";
     const navigate = useNavigate();
 
     const {register,handleSubmit,formState:{errors}} = useForm<TipoUser>({
@@ -13,7 +13,7 @@ export default function Cadastro(){
     const onSubmit = (data: TipoUser) =>{
         try{
             (async()=>{
-                await fetch("http://localhost:3000/usuarios", {
+                await fetch(API_URL, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
