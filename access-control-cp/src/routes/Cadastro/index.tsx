@@ -46,23 +46,53 @@ export default function Cadastro(){
   }
     return(
         <main>
-            <h1>Realize seu Cadastro</h1>
             <div>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} className="frmCadastro">
                     <div>
                         <label>Nome: </label>
-                        <input type="text" {...register("nome", { required: true, maxLength: 100 })} aria-invalid={!!errors.nome} aria-describedby={errors.nome ? "nome-error" : undefined} />
-                        {errors.nome && <p id="nome-error" className="mt-1 text-sm text-red-500">{errors.nome.message}</p>}
+                        <input
+                        id="nome"
+                        type="text"
+                        {...register("nome", {
+                            required: "O nome é obrigatório",
+                            minLength: { value: 2, message: "Mínimo de 2 caracteres" },
+                            maxLength: { value: 100, message: "Máximo de 100 caracteres" }
+                        })}
+                        aria-invalid={!!errors.nome}
+                        aria-describedby={errors.nome ? "nome-error" : undefined}
+                        />
+                        {errors.nome && <p id="nome-error">{errors.nome.message}</p>}
                     </div>
                     <div>
                         <label>Nome de Usuário</label>
-                        <input type="text" {...register("nomeUsuario", { required: true, maxLength: 100 })} aria-invalid={!!errors.nomeUsuario} aria-describedby={errors.nomeUsuario ? "nomeUsuario-error" : undefined} />
-                        {errors.nomeUsuario && <p id="nomeUsuario-error" className="mt-1 text-sm text-red-500">{errors.nomeUsuario.message}</p>}
+                        <input
+                        id="nomeUsuario"
+                        type="text"
+                        {...register("nomeUsuario", {
+                            required: "O nome de usuário é obrigatório",
+                            minLength: { value: 3, message: "Mínimo de 3 caracteres" },
+                            maxLength: { value: 100, message: "Máximo de 100 caracteres" }
+                        })}
+                        aria-invalid={!!errors.nomeUsuario}
+                        aria-describedby={errors.nomeUsuario ? "nomeUsuario-error" : undefined}
+                        />
+                        {errors.nomeUsuario && (
+                        <p id="nomeUsuario-error">{errors.nomeUsuario.message}</p>
+                        )}
                     </div>
                     <div>
                         <label>Email: </label>
-                        <input type="email"{...register("email", { required: true, maxLength: 150 })} aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-error" : undefined} />
-                        {errors.email && <p id="email-error" className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
+                        <input
+                        id="email"
+                        type="email"
+                        {...register("email", {
+                            required: "O e-mail é obrigatório",
+                            maxLength: { value: 150, message: "Máximo de 150 caracteres" },
+                        })}
+                        aria-invalid={!!errors.email}
+                        aria-describedby={errors.email ? "email-error" : undefined}
+                        />
+                        {errors.email && <p id="email-error">{errors.email.message}</p>}
                     </div>
                     <div>
                         <button type="submit">Cadastrar</button>
