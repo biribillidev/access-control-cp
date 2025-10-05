@@ -15,7 +15,11 @@ export default function Login() {
   const navigate = useNavigate();
   const [erro, setErro] = useState<string>("");
 
-  const { register ,handleSubmit,formState: { errors }} = useForm<FormData>({ mode: "onChange" });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({ mode: "onChange" });
 
   const onSubmit = async ({ nomeUsuario, email }: FormData) => {
     try {
@@ -27,7 +31,6 @@ export default function Login() {
 
       const lista: TipoUser[] = await resp.json();
 
-    
       if (lista.length > 0) {
         const usuario = lista[0];
 
@@ -36,7 +39,7 @@ export default function Login() {
           nome: usuario.nome,
           nomeUsuario: usuario.nomeUsuario,
           email: usuario.email,
-          loggedAt: new Date().toISOString()
+          loggedAt: new Date().toISOString(),
         };
 
         localStorage.setItem(AUTH_KEY, JSON.stringify(payload));
@@ -53,15 +56,19 @@ export default function Login() {
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="frmLogin">
       <div>
         <label>Nome de Usuário</label>
-        <input type="text"
+        <input
+          type="text"
           {...register("nomeUsuario", {
             required: "O nome de usuário é obrigatório",
             minLength: { value: 3, message: "Mínimo de 3 caracteres" },
-            maxLength: { value: 100, message: "Máximo de 100 caracteres" }
+            maxLength: { value: 100, message: "Máximo de 100 caracteres" },
           })}
           aria-invalid={!!errors.nomeUsuario}
-          aria-describedby={errors.nomeUsuario ? "nomeUsuario-error" : undefined} />
-           {errors.nomeUsuario && (
+          aria-describedby={
+            errors.nomeUsuario ? "nomeUsuario-error" : undefined
+          }
+        />
+        {errors.nomeUsuario && (
           <p id="nomeUsuario-error">{errors.nomeUsuario.message}</p>
         )}
       </div>
@@ -78,16 +85,16 @@ export default function Login() {
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? "email-error" : undefined}
         />
-         {errors.email && (
-          <p id="email-error">{errors.email.message}</p>
-        )}
+        {errors.email && <p id="email-error">{errors.email.message}</p>}
       </div>
-     <div>
-      <button type="submit">Entrar</button>
-    </div>
-    <div>
-        <Link to="/cadastro" className="btnCadastro"><button>Cadastro</button></Link>
-    </div>
+      <div>
+        <button type="submit">Entrar</button>
+      </div>
+      <div>
+        <Link to="/cadastro" className="btnCadastro">
+          <button>Cadastro</button>
+        </Link>
+      </div>
     </form>
   );
 }
