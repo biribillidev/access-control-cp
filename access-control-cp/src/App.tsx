@@ -1,8 +1,10 @@
+import Home from "../routes/Home";
+
 export default function App(){
 
   return(
     <div className="container">
-      <h1>Teste</h1>
+      <Home/>
     </div>
   );
 }
