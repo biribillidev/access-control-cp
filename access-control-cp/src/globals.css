@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+:root{
+    scroll-behavior:smooth;
+}
+
+@layer{
+
+    .container{
+        @apply flex flex-col max-w-screen h-screen justify-between;
+
+        & header{
+            @apply w-screen h-16 bg-gray-800 text-white flex items-center justify-center text-2xl font-bold;
+        }
+        
+         & main{
+            @apply w-screen flex items-center justify-center ;
+        }
+        
+        & footer{
+            @apply w-screen h-12 bg-gray-800 text-white flex items-center justify-center text-sm;
+        }
+    }
+    
+    .btnCadastro{
+        @apply justify-center m-auto;
+    }
+
+    .frmLogin, .frmCadastro{
+        @apply flex flex-col w-100 p-8 bg-white rounded-lg shadow-lg justify-center m-auto;
+
+        & div{
+            @apply mb-4 flex flex-col;
+
+            & label{
+                @apply mb-2 font-semibold;
+            }
+
+            & input{
+                @apply p-2 border border-gray-300 rounded;
+            }
+
+            & p{
+                @apply mt-1 text-sm text-red-500;
+            }
+        }
+
+        & button{
+            @apply bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition w-50 justify-center m-auto;
+        }
+
+        & small{
+            @apply text-red-500 mt-2 mb-2 text-center;
+        }
+
+    
+    }
+}
