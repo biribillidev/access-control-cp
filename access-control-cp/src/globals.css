@@ -55,10 +55,10 @@
   }
 
   .titulo {
-    @apply text-3xl font-bold mb-6 text-center;
+    @apply text-3xl font-bold mb-6 text-center flex flex-col;
   }
 
   .user-info{
-    @apply text-black text-sm;
+    @apply text-black text-sm p-2 absolute top-0 left-0 mt-15;
   }
 }
