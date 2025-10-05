@@ -56,29 +56,14 @@ export default function Login() {
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <div>
         <label htmlFor="nomeUsuario">Nome de Usuário</label>
-        <input
-          id="nomeUsuario"
-          type="text"
-          {...register("nomeUsuario", {
-            required: "O nome de usuário é obrigatório",
-            minLength: { value: 3, message: "Mínimo de 3 caracteres" }
-          })}
-        />
-        {errors.nomeUsuario && <p>{errors.nomeUsuario.message}</p>}
+        <input type="text" {...register("nomeUsuario", { required: true, maxLength: 100 })} aria-invalid={!!errors.nomeUsuario} aria-describedby={errors.nomeUsuario ? "nomeUsuario-error" : undefined} />
+        {errors.nomeUsuario && <p id="nomeUsuario-error" className="mt-1 text-sm text-red-500">{errors.nomeUsuario.message}</p>}
       </div>
 
       <div>
         <label htmlFor="email">E-mail</label>
-        <input
-          id="email"
-          type="email"
-          {...register("email", {
-            required: "O e-mail é obrigatório",
-            maxLength: { value: 150, message: "Máximo de 150 caracteres"
-            }
-          })}
-        />
-        {errors.email && <p>{errors.email.message}</p>}
+        <input type="email"{...register("email", { required: true, maxLength: 150 })} aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-error" : undefined} />
+        {errors.email && <p id="email-error" className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
       </div>
 
       {erro && <small>{erro}</small>}
