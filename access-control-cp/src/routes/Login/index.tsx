@@ -1,4 +1,3 @@
-// src/routes/Login/index.tsx
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,13 +15,12 @@ export default function Login() {
   const navigate = useNavigate();
   const [erro, setErro] = useState<string>("");
 
-  const { register,handleSubmit,formState: { errors }} = useForm<FormData>({ mode: "onSubmit" });
+  const { register ,handleSubmit,formState: { errors }} = useForm<FormData>({ mode: "onChange" });
 
   const onSubmit = async ({ nomeUsuario, email }: FormData) => {
     try {
       setErro("");
 
-      // Consulta ao endpoint filtrando pelos campos do formulário
       const qs = new URLSearchParams({ nomeUsuario, email }).toString();
       const resp = await fetch(`${API_URL}/usuarios?${qs}`);
       if (!resp.ok) throw new Error("Falha ao consultar o servidor");
@@ -33,7 +31,6 @@ export default function Login() {
       if (lista.length > 0) {
         const usuario = lista[0];
 
-        // Simula autenticação
         const payload = {
           userId: usuario.id,
           nome: usuario.nome,
@@ -53,25 +50,43 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="frmLogin">
       <div>
-        <label htmlFor="nomeUsuario">Nome de Usuário</label>
-        <input type="text" {...register("nomeUsuario", { required: true, maxLength: 100 })} aria-invalid={!!errors.nomeUsuario} aria-describedby={errors.nomeUsuario ? "nomeUsuario-error" : undefined} />
-        {errors.nomeUsuario && <p id="nomeUsuario-error" className="mt-1 text-sm text-red-500">{errors.nomeUsuario.message}</p>}
+        <label>Nome de Usuário</label>
+        <input type="text"
+          {...register("nomeUsuario", {
+            required: "O nome de usuário é obrigatório",
+            minLength: { value: 3, message: "Mínimo de 3 caracteres" },
+            maxLength: { value: 100, message: "Máximo de 100 caracteres" }
+          })}
+          aria-invalid={!!errors.nomeUsuario}
+          aria-describedby={errors.nomeUsuario ? "nomeUsuario-error" : undefined} />
+           {errors.nomeUsuario && (
+          <p id="nomeUsuario-error">{errors.nomeUsuario.message}</p>
+        )}
       </div>
 
       <div>
-        <label htmlFor="email">E-mail</label>
-        <input type="email"{...register("email", { required: true, maxLength: 150 })} aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-error" : undefined} />
-        {errors.email && <p id="email-error" className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
+        <label>E-mail</label>
+        <input
+          id="email"
+          type="email"
+          {...register("email", {
+            required: "O e-mail é obrigatório",
+            maxLength: { value: 150, message: "Máximo de 150 caracteres" },
+          })}
+          aria-invalid={!!errors.email}
+          aria-describedby={errors.email ? "email-error" : undefined}
+        />
+         {errors.email && (
+          <p id="email-error">{errors.email.message}</p>
+        )}
       </div>
-
-      {erro && <small>{erro}</small>}
-     <div>
-        <button><Link to="/cadastro">Cadastro</Link></button>
-     </div>
      <div>
       <button type="submit">Entrar</button>
+    </div>
+    <div>
+        <Link to="/cadastro" className="btnCadastro"><button>Cadastro</button></Link>
     </div>
     </form>
   );
