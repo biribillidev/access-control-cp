@@ -1,0 +1,9 @@
+{
+    "usuarios": [
+        {
+            "id": 1,
+            "nome": "João Vitor Biribilli",
+            "nomeUsuario": "biribilli",
+            "email": "biribillijoaovitor@gmail.com"
+        }]
+}
