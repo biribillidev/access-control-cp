@@ -1,34 +1,49 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import type { TipoUser } from "../../types/tipoUser";
+import type { TipoUser } from "../../types/tipoUser"
 
 export default function Cadastro(){
-    const API_URL = "http://localhost:3001";
-    const navigate = useNavigate();
+  const API_URL = "http://localhost:3001/usuarios"
+  const navigate = useNavigate();
 
-    const {register,handleSubmit,formState:{errors}} = useForm<TipoUser>({
-        mode:"onChange"
-    });
-    
-    const onSubmit = (data: TipoUser) =>{
-        try{
-            (async()=>{
-                await fetch(API_URL, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-        })
-        alert("Cadastro realizado com sucesso!");
-        navigate("/");
-            })();
-        }catch(error){
-            alert("Erro ao realizar cadastro, tente novamente.");
-            console.error("Erro ao fazer o cadastro: ",error);
-        }
+  const { register, handleSubmit, formState: { errors } } = useForm<TipoUser>({
+    mode: "onChange"
+  });
 
+  const onSubmit = async (data: TipoUser) => {
+    try {
+      const query = new URLSearchParams({
+        nomeUsuario: data.nomeUsuario,
+        email: data.email
+      }).toString();
+
+      const checkResposta = await fetch(`${API_URL}?${query}`);
+      const usuarioExistente: TipoUser[] = await checkResposta.json();
+
+      if (usuarioExistente.length > 0) {
+        alert("Já existe um usuário com esse nome de usuário ou e-mail!");
+        return;
+      }
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao cadastrar")
+      }
+
+      alert("Cadastro realizado com sucesso!")
+      navigate("/login");
+    } catch (error) {
+      alert("Erro ao realizar cadastro, tente novamente.")
+      console.error("Erro ao fazer o cadastro: ", error)
     }
+  }
     return(
         <main>
             <h1>Realize seu Cadastro</h1>
